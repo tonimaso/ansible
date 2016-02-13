@@ -1,0 +1,15 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  become: Yes
+  vars:
+    http_port: 80
+    max_clients: 200
+  tasks:
+  - name: ensure apache is at the latest version
+    yum: name=httpd state=latest
+  - name: ensure apache is running (and enable it at boot)
+    service: name=httpd state=started enabled=yes
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
